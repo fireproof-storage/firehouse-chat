@@ -1,30 +1,36 @@
 import React, { useState } from 'react'
+import { useFireproof } from 'use-fireproof'
 
 const Channel: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([])
-  const [newMessage, setNewMessage] = useState('')
+  const channelId = 'test'
+  const { useDocument, useLiveQuery } = useFireproof(channelId)
+
+  const [doc, setDoc, saveDoc] = useDocument(() => ({ created: Date.now(), message: '' }))
+
+  const messages = useLiveQuery('created', { descending: true }).docs
 
   const handleAddMessage = () => {
-    if (newMessage.trim() !== '') {
-      setMessages([...messages, newMessage])
-      setNewMessage('')
+    if (doc.message.trim() !== '') {
+      delete doc._id
+      saveDoc()
+      setDoc({ created: Date.now(), message: '' }, { replace: true })
     }
   }
-
+  
   return (
     <div>
       <ul>
-        {messages.map((message, index) => (
-          <li key={index}>{message}</li>
+        {messages.map((doc) => (
+          <li key={doc._id}>{doc.message}</li>
         ))}
       </ul>
       <input
-        title="your message"
+        title="write a message message"
         type="text"
-        value={newMessage}
-        onChange={e => setNewMessage(e.target.value)}
+        value={doc.message}
+        onChange={e => setDoc({ message: e.target.value })}
       />
-      <button onClick={handleAddMessage}>Add Message</button>
+      <button type="submit" onClick={handleAddMessage}>Add Message</button>
     </div>
   )
 }
