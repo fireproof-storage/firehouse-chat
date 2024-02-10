@@ -17,18 +17,24 @@ const Sidebar: React.FC = () => {
 
   const links: LinkItem[] = [
     { name: 'Home', path: '/' },
-    { name: 'Channel', path: '/channel' }
+    { name: 'New Channel', path: '/channel' }
     // Add more links as needed
   ]
 
   return (
-    <div>
+    <div
+      style={{
+        padding: '1rem'
+      }}
+    >
       <h2>Firehouse</h2>
-      {links.map((link, index) => (
-        <Link key={index} to={link.path}>
-          {link.name}
-        </Link>
-      ))}
+      <ul>
+        {links.map((link, index) => (
+          <li key={index}>
+            <Link to={link.path}>{link.name}</Link>
+          </li>
+        ))}
+      </ul>
 
       <h3>Channels</h3>
       <ul>

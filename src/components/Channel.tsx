@@ -100,6 +100,11 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
 
   useEffect(scrollTo, [messages])
 
+  const handleSetUsername = (username: string) => {
+    localStorage.setItem('username', username);
+  }
+  const username = localStorage.getItem('username')
+  
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
       <div>
@@ -109,7 +114,9 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
           ))}
         </ul>
       </div>
-      <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} />
+      <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} 
+        handleSetUsername={handleSetUsername} username={username}
+       />
     </div>
   )
 }

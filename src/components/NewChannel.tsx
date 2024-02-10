@@ -24,25 +24,32 @@ const NewChannel: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} style={{ padding: '1rem', backgroundColor: '#f4f4f4' }}>
       <div>
-        <label>
-          Channel Name:
-        </label>
-        <br />
-        <input type="text" value={name} onChange={e => setDoc({ name: e.target.value })} style={{ marginLeft: '1rem' }} />
-      </div>
-      <div>
-        <label>
-          Description:
-        </label>
+        <label htmlFor="channelName">Channel Name:</label>
         <br />
         <input
           type="text"
-          value={description}
-          onChange={e => setDoc({ description: e.target.value })}
+          id="channelName"
+          value={name}
+          onChange={e => setDoc({ name: e.target.value })}
+          placeholder="Enter channel name"
           style={{ marginLeft: '1rem' }}
         />
       </div>
-      <button type="submit" style={{ margin: '1rem' }}>Create Channel</button>
+      <div>
+        <label htmlFor="channelDescription">Description:</label>
+        <br />
+        <input
+          type="text"
+          id="channelDescription"
+          value={description}
+          onChange={e => setDoc({ description: e.target.value })}
+          placeholder="Enter channel description"
+          style={{ marginLeft: '1rem' }}
+        />
+      </div>
+      <button type="submit" style={{ margin: '1rem' }}>
+        Create Channel
+      </button>
     </form>
   )
 }
