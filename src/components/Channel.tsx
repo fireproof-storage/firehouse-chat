@@ -4,15 +4,16 @@ import { useParams } from 'react-router-dom'
 import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
+import { MessageForm } from './MessageForm'
 
-const styles = {
+export const styles = {
   messageForm: {
     padding: '1rem',
     backgroundColor: '#f4f4f4',
     boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
     position: 'fixed' as const,
     bottom: 0,
-    width: '100%'
+    width: '80%'
   },
   messages: {
     display: 'flex',
@@ -27,6 +28,22 @@ const styles = {
   }
 }
 
+export interface MessageDoc {
+  type: 'message'
+  max: number
+  created: number
+  message: string
+  _id?: string
+}
+
+export interface ReactionDoc {
+  type: 'reaction'
+  parent: { max: number; created: number }
+  reaction: string
+}
+
+type AnyDoc = MessageDoc | ReactionDoc
+
 const Channel: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   return <InnerChannel key={id} id={id || ''} />
@@ -37,12 +54,21 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
   // @ts-expect-error does not exist
   connect.partykit(database)
 
-  const [doc, setDoc, saveDoc] = useDocument(() => ({ max: 0, created: Date.now(), message: '' }))
+  const [doc, setDoc, saveDoc] = useDocument<MessageDoc>(() => ({
+    type: 'message',
+    max: 0,
+    created: Date.now(),
+    message: ''
+  }))
   // @ts-expect-error does not exist
-  const messages = useLiveQuery(({ max, created }) => [max, created], { descending: true })
-    .docs as (typeof doc)[]
+  const channel = useLiveQuery(({ max, created, type }) => [max, created, type], {
+    descending: true
+  }).docs as AnyDoc[]
 
-  console.log('messages', database.name, messages)
+  const messages = useMemo(
+    () => channel.filter(doc => doc.type === 'message') as MessageDoc[],
+    [channel]
+  )
 
   const handleAddMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -52,10 +78,11 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
       saveDoc(doc)
       setDoc(
         {
+          type: 'message',
           max: 0,
           created: Date.now(),
           message: ''
-        },
+        } as MessageDoc,
         { replace: true }
       )
     }
@@ -78,22 +105,11 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
       <div>
         <ul style={styles.messages}>
           {messages.map(doc => (
-            <Message key={doc._id} message={doc.message} created={doc.created} />
+            <Message key={doc._id} doc={doc} />
           ))}
         </ul>
       </div>
-      <form style={styles.messageForm} onSubmit={handleAddMessage} autoComplete="off">
-        <input
-          title="write a message message"
-          name="message"
-          type="text"
-          value={doc.message}
-          autoComplete="off"
-          style={{ width: '80%', marginRight: '1rem' }}
-          onChange={e => setDoc({ message: e.target.value })}
-        />
-        <button type="submit">Post</button>
-      </form>
+      <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} />
     </div>
   )
 }

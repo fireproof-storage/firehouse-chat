@@ -13,14 +13,14 @@ const Sidebar: React.FC = () => {
   // @ts-expect-error does not exist
   connect.partykit(database)
 
-  const channels = useLiveQuery('name').docs as { name: string; _id: string, description: string }[]
+  const channels = useLiveQuery('name').docs as { name: string; _id: string; description: string }[]
 
   const links: LinkItem[] = [
     { name: 'Home', path: '/' },
     { name: 'Channel', path: '/channel' }
     // Add more links as needed
   ]
-  console.log(channels)
+
   return (
     <div>
       <h2>Firehouse</h2>
