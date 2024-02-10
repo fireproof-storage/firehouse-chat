@@ -28,17 +28,19 @@ const styles = {
 }
 
 const Channel: React.FC = () => {
-  const {id} = useParams<{ id: string }>()
-  console.log('id', id)
-
-  const { database, useDocument, useLiveQuery } =  useFireproof(id)
+  const { id } = useParams<{ id: string }>()
+  return <InnerChannel key={id} id={id || ''} />
+}
+const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
+  const { database, useDocument, useLiveQuery } = useFireproof(id)
 
   // @ts-expect-error does not exist
   connect.partykit(database)
 
   const [doc, setDoc, saveDoc] = useDocument(() => ({ max: 0, created: Date.now(), message: '' }))
   // @ts-expect-error does not exist
-  const messages = useLiveQuery(({ max, created }) => [max, created], { descending: true }).docs as (typeof doc)[]
+  const messages = useLiveQuery(({ max, created }) => [max, created], { descending: true })
+    .docs as (typeof doc)[]
 
   console.log('messages', database.name, messages)
 
