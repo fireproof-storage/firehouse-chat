@@ -8,6 +8,7 @@
   "compatibilityDate": "2024-02-09",
   "serve": {
     "path": "public",
+    "singlePageApp": true,
     "build": "src/client.tsx"
   }
 }

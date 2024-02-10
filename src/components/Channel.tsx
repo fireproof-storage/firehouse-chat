@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
@@ -10,7 +12,7 @@ const styles = {
     boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
     position: 'fixed' as const,
     bottom: 0,
-    width: '100%',
+    width: '100%'
   },
   messages: {
     display: 'flex',
@@ -26,15 +28,19 @@ const styles = {
 }
 
 const Channel: React.FC = () => {
-  const channelId = 'foomax2'
-  const { database, useDocument, useLiveQuery } = useFireproof(channelId)
+  const {id} = useParams<{ id: string }>()
+  console.log('id', id)
+
+  const { database, useDocument, useLiveQuery } =  useFireproof(id)
+
   // @ts-expect-error does not exist
   connect.partykit(database)
 
   const [doc, setDoc, saveDoc] = useDocument(() => ({ max: 0, created: Date.now(), message: '' }))
   // @ts-expect-error does not exist
-  const messages = useLiveQuery(({ max, created }) => [max, created], { descending: true })
-    .docs as (typeof doc)[]
+  const messages = useLiveQuery(({ max, created }) => [max, created], { descending: true }).docs as (typeof doc)[]
+
+  console.log('messages', database.name, messages)
 
   const handleAddMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -57,7 +63,6 @@ const Channel: React.FC = () => {
     HTMLDivElement & { scrollTo: (options: { top: number; behavior: 'smooth' }) => void }
   >(null)
   function scrollTo() {
-    console.log('scrolling')
     scrollableDivRef.current?.scrollTo({
       top: scrollableDivRef.current.scrollHeight
       // behavior: 'smooth'
@@ -82,7 +87,7 @@ const Channel: React.FC = () => {
           type="text"
           value={doc.message}
           autoComplete="off"
-          style={{ width: '80%', marginRight: '1rem'}}
+          style={{ width: '80%', marginRight: '1rem' }}
           onChange={e => setDoc({ message: e.target.value })}
         />
         <button type="submit">Post</button>
