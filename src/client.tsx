@@ -12,7 +12,6 @@ function App() {
     }
   })
   return <div>
-    <h1>Fireproof Workshop</h1>
     <Channel />
   </div>
   

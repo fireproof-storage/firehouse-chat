@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useFireproof } from 'use-fireproof'
+import { connect } from '@fireproof/partykit'
 
 const Channel: React.FC = () => {
-  const channelId = 'test'
-  const { useDocument, useLiveQuery } = useFireproof(channelId)
+  const channelId = 'foo2'
+  const { database, useDocument, useLiveQuery } = useFireproof(channelId)
+
+  connect.partykit(database)
 
   const [doc, setDoc, saveDoc] = useDocument(() => ({ created: Date.now(), message: '' }))
 
@@ -16,21 +19,25 @@ const Channel: React.FC = () => {
       setDoc({ created: Date.now(), message: '' }, { replace: true })
     }
   }
-  
+
   return (
-    <div>
-      <ul>
-        {messages.map((doc) => (
-          <li key={doc._id}>{doc.message}</li>
-        ))}
-      </ul>
-      <input
-        title="write a message message"
-        type="text"
-        value={doc.message}
-        onChange={e => setDoc({ message: e.target.value })}
-      />
-      <button type="submit" onClick={handleAddMessage}>Add Message</button>
+    <div className='channel-outer'>
+      <div className="channel">
+        <ul className="messages">
+          {messages.map(doc => (
+            <li key={doc._id}>{doc.message}</li>
+          ))}
+        </ul>
+      </div>
+      <form className="message-form" onSubmit={handleAddMessage}>
+        <input
+          title="write a message message"
+          type="text"
+          value={doc.message}
+          onChange={e => setDoc({ message: e.target.value })}
+        />
+        <button type="submit">Post</button>
+      </form>
     </div>
   )
 }
