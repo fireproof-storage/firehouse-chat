@@ -26,32 +26,3 @@ h6 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
-
-#app {
-  padding: 1rem;
-}
-
-
-.message-form {
-  padding: 1rem;
-  background-color: #f4f4f4;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  bottom: 0;
-}
-
-
- .channel {
-  display: flex;
-  flex-direction: column-reverse;
-  
-  
-  width: 100%;
-  padding: 1rem;
-}
-
-.messages {
-  display: flex;
-  flex-direction: column-reverse;
-  margin: 2em 0;
-}
