@@ -36,3 +36,7 @@ ul {
 li {
   list-style: none;
 }
+
+li.message:hover {
+  background-color: #f4f4f4;
+}

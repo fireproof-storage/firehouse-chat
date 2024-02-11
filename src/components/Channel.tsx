@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import gravatar from 'gravatar'
+
 import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
@@ -8,14 +10,6 @@ import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
 
 export const styles = {
-  messageForm: {
-    padding: '1rem',
-    backgroundColor: '#f4f4f4',
-    boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
-    position: 'fixed' as const,
-    bottom: 0,
-    width: '80%'
-  },
   messages: {
     display: 'flex',
     flexDirection: 'column-reverse' as const,
@@ -34,16 +28,18 @@ export interface MessageDoc {
   max: number
   created: number
   message: string
+  profileImg: string
   _id?: string
 }
 
 export interface ReactionDoc {
   type: 'reaction'
-  parent: { max: number; created: number }
+  parent: { max: number; created: number; id: string }
   reaction: string
+  profileImg: string
 }
 
-type AnyDoc = MessageDoc | ReactionDoc
+export type AnyDoc = MessageDoc | ReactionDoc
 
 const Channel: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -55,9 +51,18 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
   // @ts-expect-error does not exist
   connect.partykit(database)
 
+  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
+
+  const handleSetEmail = (email: string) => {
+    localStorage.setItem('email', email)
+    setEmail(email)
+  }
+  const gravatarUrl = email ? gravatar.url(email) : ''
+
   const [doc, setDoc, saveDoc] = useDocument<MessageDoc>(() => ({
     type: 'message',
     max: 0,
+    profileImg: gravatarUrl,
     created: Date.now(),
     message: ''
   }))
@@ -71,17 +76,20 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
     [channel]
   )
 
-  const handleAddMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (doc.message.trim() !== '') {
-      const max = messages.sort((a, b) => b.created - a.created)[0]?.created || 0
-      doc.max = Math.max(max, doc.created)
+  const handleAddMessage = (message: string) => {
+    if (message.trim() !== '') {
+      doc.message = message
+      doc.created = Date.now()
+      doc.profileImg = gravatarUrl
+      doc.max =
+        1 + Math.max(messages.sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
       saveDoc(doc)
       setDoc(
         {
           type: 'message',
           max: 0,
           created: Date.now(),
+          profileImg: gravatarUrl,
           message: ''
         } as MessageDoc,
         { replace: true }
@@ -101,24 +109,17 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
 
   useEffect(scrollTo, [messages])
 
-  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
-
-  const handleSetEmail = (email: string) => {
-    localStorage.setItem('email', email)
-    setEmail(email)
-  }
-
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
       <div>
         <ul style={styles.messages}>
           {messages.map(doc => (
-            <Message key={doc._id} doc={doc} />
+            <Message key={doc._id} doc={doc} gravatar={gravatarUrl} database={database} />
           ))}
         </ul>
       </div>
       {email ? (
-        <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} />
+        <MessageForm handleAddMessage={handleAddMessage} gravatar={gravatarUrl} />
       ) : (
         <EmailForm handleSetEmail={handleSetEmail} />
       )}

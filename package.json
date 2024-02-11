@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@fireproof/partykit": "^0.17.4",
+    "gravatar": "^1.8.2",
     "partysocket": "^0.0.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -15,6 +16,7 @@
     "use-fireproof": "^0.17.7"
   },
   "devDependencies": {
+    "@types/gravatar": "^1.8.6",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "partykit": "^0.0.85",

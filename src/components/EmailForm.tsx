@@ -1,18 +1,17 @@
-import React from 'react';
-import { styles } from './Channel';
+import React from 'react'
+import { styles } from './MessageForm'
 
-
-export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void; }> = ({
+export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = ({
   handleSetEmail
 }) => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState('')
 
   return (
     <form
       style={styles.messageForm}
       onSubmit={e => {
-        e.preventDefault();
-        handleSetEmail(email);
+        e.preventDefault()
+        handleSetEmail(email)
       }}
     >
       <input
@@ -23,8 +22,9 @@ export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void; }> =
         autoComplete="off"
         style={{ width: '80%', marginRight: '1rem' }}
         onChange={e => setEmail(e.target.value)}
-        placeholder="Enter your email" />
+        placeholder="Enter your email"
+      />
       <button type="submit">Login</button>
     </form>
-  );
-};
+  )
+}
