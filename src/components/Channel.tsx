@@ -9,6 +9,34 @@ import { Message } from './Message'
 import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
 
+interface Row {
+  key: string[]
+  doc: AnyDoc
+}
+
+interface AggregatedData {
+  key: string
+  data: { [type: string]: AnyDoc[] }
+}
+
+const buildAggregatedData = (rows: Row[], groupingElementsCount: number): AggregatedData[] => {
+  return rows.reduce((acc: AggregatedData[], row: Row) => {
+    const groupKeyParts = row.key.slice(0, groupingElementsCount)
+    const dataType = row.key[groupingElementsCount]
+    const key = groupKeyParts.join('-')
+    const groupIndex = acc.findIndex(group => group.key === key)
+    if (groupIndex === -1) {
+      acc.push({ key, data: { [dataType]: [row.doc] } })
+    } else {
+      if (!acc[groupIndex].data[dataType]) {
+        acc[groupIndex].data[dataType] = []
+      }
+      acc[groupIndex].data[dataType].push(row.doc)
+    }
+    return acc
+  }, [])
+}
+
 export const styles = {
   messages: {
     display: 'flex',
@@ -37,6 +65,7 @@ export interface ReactionDoc {
   parent: { max: number; created: number; id: string }
   reaction: string
   profileImg: string
+  _id?: string
 }
 
 export type AnyDoc = MessageDoc | ReactionDoc
@@ -67,12 +96,22 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
     message: ''
   }))
   // @ts-expect-error does not exist
-  const channel = useLiveQuery(({ max, created, type }) => [max, created, type], {
-    descending: true
-  }).docs as AnyDoc[]
+  const channel = useLiveQuery(({ max, created, type, parent }) => {
+      if (parent) {
+        return [parent.max, parent.created, type]
+      } else {
+        return [max, created, type]
+      }
+    },
+    {
+      descending: true
+    }
+  )
+
+  const aggregatedData = buildAggregatedData(channel.rows, 2)
 
   const messages = useMemo(
-    () => channel.filter(doc => doc.type === 'message') as MessageDoc[],
+    () => (channel.docs as AnyDoc[]).filter(doc => doc.type === 'message') as MessageDoc[],
     [channel]
   )
 
@@ -107,15 +146,23 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
     })
   }
 
-  useEffect(scrollTo, [messages])
+  useEffect(scrollTo, [channel])
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
       <div>
         <ul style={styles.messages}>
-          {messages.map(doc => (
-            <Message key={doc._id} doc={doc} gravatar={gravatarUrl} database={database} />
-          ))}
+          {aggregatedData.map(({ data }) => {
+            return (
+              <Message
+                key={data.message[0]._id}
+                doc={data.message[0] as MessageDoc}
+                gravatar={gravatarUrl}
+                database={database}
+                reactions={data.reaction as ReactionDoc[]}
+              />
+            )
+          })}
         </ul>
       </div>
       {email ? (

@@ -5,6 +5,7 @@ import type { MessageDoc, AnyDoc, ReactionDoc } from './Channel'
 interface MessageProps {
   doc: MessageDoc
   gravatar: string
+  reactions: ReactionDoc[]
   database: Database
 }
 
@@ -34,7 +35,7 @@ const styles = {
   }
 }
 
-const Message: React.FC<MessageProps> = ({ doc, gravatar, database }) => {
+const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions }) => {
   const { message, max, created, profileImg, _id: mId } = doc
   const date = new Date(created)
 
@@ -53,6 +54,10 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database }) => {
       <img src={profileImg} alt="gravatar" style={styles.gravatar} />
       <p style={styles.message}>{message}</p>
       <small style={styles.date}>{date.toLocaleString()}</small>
+      <br/>
+      {reactions?.map(reaction => (
+        <span key={reaction._id}>{reaction.reaction}</span>
+      ))}
       <EmojiPicker onEmojiSelect={onEmojiSelect} />
     </li>
   )
