@@ -48,7 +48,7 @@ const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onE
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>➕</button>
       {isOpen && (
-        <div style={{ position: 'absolute', zIndex: 10 }}>
+        <div>
           {topReactions.map(emoji => (
             <button key={emoji} onClick={() => onEmojiSelect(emoji)}>
               {emoji}

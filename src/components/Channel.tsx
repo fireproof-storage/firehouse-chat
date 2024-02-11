@@ -5,6 +5,7 @@ import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
 import { MessageForm } from './MessageForm'
+import { EmailForm } from './EmailForm'
 
 export const styles = {
   messageForm: {
@@ -100,11 +101,13 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
 
   useEffect(scrollTo, [messages])
 
-  const handleSetUsername = (username: string) => {
-    localStorage.setItem('username', username);
+  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
+
+  const handleSetEmail = (email: string) => {
+    localStorage.setItem('email', email)
+    setEmail(email)
   }
-  const username = localStorage.getItem('username')
-  
+
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
       <div>
@@ -114,9 +117,11 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
           ))}
         </ul>
       </div>
-      <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} 
-        handleSetUsername={handleSetUsername} username={username}
-       />
+      {email ? (
+        <MessageForm doc={doc} setDoc={setDoc} handleAddMessage={handleAddMessage} />
+      ) : (
+        <EmailForm handleSetEmail={handleSetEmail} />
+      )}
     </div>
   )
 }
