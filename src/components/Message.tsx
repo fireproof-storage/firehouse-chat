@@ -56,7 +56,7 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions })
       <small style={styles.date}>{date.toLocaleString()}</small>
       <br/>
       {reactions?.map(reaction => (
-        <span key={reaction._id}>{reaction.reaction}</span>
+        <span title={reaction.profileImg} key={reaction._id}>{reaction.reaction}</span>
       ))}
       <EmojiPicker onEmojiSelect={onEmojiSelect} />
     </li>
