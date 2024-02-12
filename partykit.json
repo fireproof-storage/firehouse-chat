@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.partykit.io/schema.json",
-  "name": "react-fireproof",
+  "name": "firehouse-chat",
   "main": "src/server.ts",
   "parties": {
     "fireproof": "node_modules/@fireproof/partykit/src/server.ts"
