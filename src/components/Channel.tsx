@@ -117,7 +117,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   // @ts-expect-error does not exist
   const messages = useLiveQuery(({ created, type }) => (type === 'message' ? created : undefined), {
     descending: true,
-    limit: 50
+    // limit: 50
   })
 
   const reactions = useLiveQuery(
