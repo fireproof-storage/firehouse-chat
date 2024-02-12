@@ -1,4 +1,6 @@
-## 🎈 react-fireproof
+# Firehouse - collaborative chat using Fireproof
+
+The example is based on the PartyKit generator. Fireproof runs anywhere.
 
 Welcome to the party, pal!
 
