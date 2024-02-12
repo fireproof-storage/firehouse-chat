@@ -60,7 +60,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   const { database, useDocument, useLiveQuery } = useFireproof(id)
 
   // @ts-expect-error does not exist
-  connect.partykitS3(database)
+  connect.partykitS3(database, process.env.PARTYKIT_HOST as string)
 
   const socket = usePartySocket({
     room: id,
