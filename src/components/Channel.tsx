@@ -9,29 +9,6 @@ import { Message } from './Message'
 import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
 
-interface AggregatedData {
-  key: string | string[]
-  data: { [type: string]: AnyDoc[] }
-}
-
-const buildAggregatedData = (rows: IndexRow[], groupingElementsCount: number): AggregatedData[] => {
-  return rows.reduce((acc: AggregatedData[], row: IndexRow) => {
-    const groupKeyParts = (row.key as string[]).slice(0, groupingElementsCount)
-    const dataType = row.key[groupingElementsCount]
-    const key = groupKeyParts.join('-')
-    const groupIndex = acc.findIndex(group => group.key === key)
-    if (groupIndex === -1) {
-      acc.push({ key, data: { [dataType]: [row.doc as AnyDoc] } })
-    } else {
-      if (!acc[groupIndex].data[dataType]) {
-        acc[groupIndex].data[dataType] = []
-      }
-      acc[groupIndex].data[dataType].unshift(row.doc as AnyDoc)
-    }
-    return acc
-  }, [])
-}
-
 export const styles = {
   messages: {
     display: 'flex',
@@ -99,21 +76,6 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     message: ''
   }))
 
-  // // @ts-expect-error does not exist
-  // const channel = useLiveQuery(({ max, created, type, parent }) => {
-  //     if (parent) {
-  //       return [parent.max, parent.created, type]
-  //     } else {
-  //       return [max, created, type]
-  //     }
-  //   },
-  //   {
-  //     descending: true,
-  //     // range: [[0, 0, 'message'], [1707680483365, 1707680263265]],
-  //     limit: 50
-  //   }
-  // )
-
   // @ts-expect-error does not exist
   const messages = useLiveQuery(({ created, type }) => (type === 'message' ? created : undefined), {
     descending: true,
@@ -137,18 +99,6 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     acc[key].push(row.doc as ReactionDoc);
     return acc;
   }, {} as Record<string, ReactionDoc[]>);
-
-
-  
-
-  // const aggregatedData = buildAggregatedData(reactions.rows, 2).filter(
-  //   (row: AggregatedData) => row.data.message
-  // )
-
-  // const messages = useMemo(
-  //   () => (channel.docs as AnyDoc[]).filter(doc => doc.type === 'message') as MessageDoc[],
-  //   [channel]
-  // )
 
   const handleAddMessage = (message: string) => {
     if (message.trim() !== '') {
@@ -175,8 +125,6 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   useEffect(scrollTo, [messages.docs.length])
 
   const channelName = thread ? thread.message : id
-
-  // console.log('aggregatedData', channel.rows[40]?.key)
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
