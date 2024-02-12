@@ -1,3 +1,5 @@
+declare const PARTYKIT_HOST: string | undefined;
+
 import type * as Party from "partykit/server";
 
 import { fireproof, type Database } from "@fireproof/core"
@@ -28,7 +30,10 @@ function myFireproof(name: string, partyHost?: string) {
 export default class Server implements Party.Server {
   db: Database
   constructor(readonly room: Party.Room) {
-    this.db = myFireproof(room.id, process.env.PARTYKIT_HOST as string)
+
+    console.log('PARTYKIT_HOST', PARTYKIT_HOST)
+
+    this.db = myFireproof(room.id, PARTYKIT_HOST as string)
     this.db.subscribe(async () => {
       const latest = await this.db.changes([], {limit: 5})
       console.log('latest', latest.rows.map((row) => row.value.message || row.value.reaction))
