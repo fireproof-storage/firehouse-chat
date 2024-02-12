@@ -109,6 +109,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     },
     {
       descending: true,
+      // range: [[0, 0, 'message'], [1707680483365, 1707680263265]],
       limit: 50
     }
   )
@@ -145,6 +146,8 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   useEffect(scrollTo, [channel])
 
   const channelName = thread ? thread.message : id
+
+console.log('aggregatedData', channel.rows[40]?.key)
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
