@@ -99,27 +99,56 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     message: ''
   }))
 
+  // // @ts-expect-error does not exist
+  // const channel = useLiveQuery(({ max, created, type, parent }) => {
+  //     if (parent) {
+  //       return [parent.max, parent.created, type]
+  //     } else {
+  //       return [max, created, type]
+  //     }
+  //   },
+  //   {
+  //     descending: true,
+  //     // range: [[0, 0, 'message'], [1707680483365, 1707680263265]],
+  //     limit: 50
+  //   }
+  // )
+
   // @ts-expect-error does not exist
-  const channel = useLiveQuery(({ max, created, type, parent }) => {
-      if (parent) {
-        return [parent.max, parent.created, type]
-      } else {
-        return [max, created, type]
-      }
-    },
-    {
-      descending: true,
-      // range: [[0, 0, 'message'], [1707680483365, 1707680263265]],
-      // limit: 50
+  const messages = useLiveQuery(({ created, type }) => (type === 'message' ? created : undefined), {
+    descending: true,
+    limit: 50
+  })
+
+  const reactions = useLiveQuery(
+    // @ts-expect-error does not exist
+    ({ parent, type }) => (type === 'reaction' ? parent.id : undefined),
+    { keys: messages.docs.map(({ _id }) => _id!) }
+  )
+
+  // console.log('messages', messages)
+  // console.log('reactions', reactions)
+
+  const groupedReactions = reactions.rows.reduce((acc: Record<string, ReactionDoc[]>, row) => {
+    const key = row.key as string;
+    if (!acc[key]) {
+      acc[key] = [];
     }
-  )
+    acc[key].push(row.doc as ReactionDoc);
+    return acc;
+  }, {} as Record<string, ReactionDoc[]>);
 
-  const aggregatedData = buildAggregatedData(channel.rows, 2).filter((row: AggregatedData) => row.data.message)
 
-  const messages = useMemo(
-    () => (channel.docs as AnyDoc[]).filter(doc => doc.type === 'message') as MessageDoc[],
-    [channel]
-  )
+  
+
+  // const aggregatedData = buildAggregatedData(reactions.rows, 2).filter(
+  //   (row: AggregatedData) => row.data.message
+  // )
+
+  // const messages = useMemo(
+  //   () => (channel.docs as AnyDoc[]).filter(doc => doc.type === 'message') as MessageDoc[],
+  //   [channel]
+  // )
 
   const handleAddMessage = (message: string) => {
     if (message.trim() !== '') {
@@ -127,7 +156,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
       doc.created = Date.now()
       doc.profileImg = gravatarUrl
       doc.max =
-        1 + Math.max(messages.sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
+        1 + Math.max((messages.docs as MessageDoc[]).sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
       saveDoc(doc)
       setDoc(undefined, { replace: true })
     }
@@ -143,25 +172,26 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     })
   }
 
-  useEffect(scrollTo, [channel])
+  useEffect(scrollTo, [messages])
 
   const channelName = thread ? thread.message : id
 
-// console.log('aggregatedData', channel.rows[40]?.key)
+  // console.log('aggregatedData', channel.rows[40]?.key)
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
       <h1>{channelName}</h1>
       <div>
         <ul style={styles.messages}>
-          {aggregatedData.map(({ data }) => {
+          {messages.docs.map((doc) => {
+            const reactions = groupedReactions[doc._id!]
             return (
               <Message
-                key={data.message[0]._id}
-                doc={data.message[0] as MessageDoc}
+                key={doc._id}
+                doc={doc as MessageDoc}
                 gravatar={gravatarUrl}
                 database={database}
-                reactions={data.reaction as ReactionDoc[]}
+                reactions={reactions as ReactionDoc[]}
                 thread={!thread}
               />
             )
