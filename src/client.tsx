@@ -8,7 +8,7 @@ import { Route, Routes } from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import { Home } from './components/Home'
-import { Channel } from './components/Channel'
+import { Channel, Thread } from './components/Channel'
 import { NewChannel } from './components/NewChannel'
 import { Sidebar } from './components/Sidebar'
 
@@ -25,6 +25,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 function App() {
   const routes = [
+    { path: '/channel/:id/thread/:tid', component: <Thread /> },
     { path: '/channel/:id', component: <Channel /> },
     { path: '/channel', component: <NewChannel /> },
     { path: '/', component: <Home /> }

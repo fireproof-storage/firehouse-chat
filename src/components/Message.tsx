@@ -7,6 +7,7 @@ interface MessageProps {
   gravatar: string
   reactions: ReactionDoc[]
   database: Database
+  thread?: boolean
 }
 
 const styles = {
@@ -35,7 +36,7 @@ const styles = {
   }
 }
 
-const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions }) => {
+const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions, thread }) => {
   const { message, max, created, profileImg, _id: mId } = doc
   const date = new Date(created)
 
@@ -60,6 +61,16 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions })
           {reaction.reaction}
         </span>
       ))}
+      <br />
+      {thread && (
+        <Link
+          style={{ float: 'left', padding: '0 10px', textDecoration: 'none' }}
+          to={`./thread/${mId}`}
+        >
+          🧵
+        </Link>
+      )}
+
       <EmojiPicker onEmojiSelect={onEmojiSelect} />
     </li>
   )
@@ -68,6 +79,7 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions })
 export { Message }
 
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onEmojiSelect }) => {
   const [isOpen, setIsOpen] = useState(false)

@@ -65,11 +65,19 @@ export interface ReactionDoc {
 
 export type AnyDoc = MessageDoc | ReactionDoc
 
+const Thread: React.FC = () => {
+  const { id, tid } = useParams<{ id: string; tid: string }>()
+  const { useDocument } = useFireproof(id)
+  const [doc] = useDocument<MessageDoc>(() => ({ _id: tid! } as MessageDoc))
+  return <InnerChannel key={tid} id={tid || ''} thread={doc} />
+}
+
 const Channel: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   return <InnerChannel key={id} id={id || ''} />
 }
-const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
+
+const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, thread }) => {
   const { database, useDocument, useLiveQuery } = useFireproof(id)
 
   // @ts-expect-error does not exist
@@ -100,11 +108,12 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
       }
     },
     {
-      descending: true
+      descending: true,
+      limit: 50
     }
   )
 
-  const aggregatedData = buildAggregatedData(channel.rows, 2)
+  const aggregatedData = buildAggregatedData(channel.rows, 2).filter((row: AggregatedData) => row.data.message)
 
   const messages = useMemo(
     () => (channel.docs as AnyDoc[]).filter(doc => doc.type === 'message') as MessageDoc[],
@@ -119,10 +128,7 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
       doc.max =
         1 + Math.max(messages.sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
       saveDoc(doc)
-      setDoc(
-        undefined,
-        { replace: true }
-      )
+      setDoc(undefined, { replace: true })
     }
   }
 
@@ -138,8 +144,11 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
 
   useEffect(scrollTo, [channel])
 
+  const channelName = thread ? thread.message : id
+
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
+      <h1>{channelName}</h1>
       <div>
         <ul style={styles.messages}>
           {aggregatedData.map(({ data }) => {
@@ -150,6 +159,7 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
                 gravatar={gravatarUrl}
                 database={database}
                 reactions={data.reaction as ReactionDoc[]}
+                thread={!thread}
               />
             )
           })}
@@ -164,4 +174,4 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
-export { Channel }
+export { Channel, Thread }
