@@ -172,7 +172,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     })
   }
 
-  useEffect(scrollTo, [messages])
+  useEffect(scrollTo, [messages.docs.length])
 
   const channelName = thread ? thread.message : id
 
@@ -192,7 +192,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
                 gravatar={gravatarUrl}
                 database={database}
                 reactions={reactions as ReactionDoc[]}
-                thread={!thread}
+                thread={false && !thread}
               />
             )
           })}
