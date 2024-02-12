@@ -3,35 +3,30 @@ import { useParams } from 'react-router-dom'
 
 import gravatar from 'gravatar'
 
-import { useFireproof } from 'use-fireproof'
+import { useFireproof, type IndexRow } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
 import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
 
-interface Row {
-  key: string[]
-  doc: AnyDoc
-}
-
 interface AggregatedData {
-  key: string
+  key: string | string[]
   data: { [type: string]: AnyDoc[] }
 }
 
-const buildAggregatedData = (rows: Row[], groupingElementsCount: number): AggregatedData[] => {
-  return rows.reduce((acc: AggregatedData[], row: Row) => {
-    const groupKeyParts = row.key.slice(0, groupingElementsCount)
+const buildAggregatedData = (rows: IndexRow[], groupingElementsCount: number): AggregatedData[] => {
+  return rows.reduce((acc: AggregatedData[], row: IndexRow) => {
+    const groupKeyParts = (row.key as string[]).slice(0, groupingElementsCount)
     const dataType = row.key[groupingElementsCount]
     const key = groupKeyParts.join('-')
     const groupIndex = acc.findIndex(group => group.key === key)
     if (groupIndex === -1) {
-      acc.push({ key, data: { [dataType]: [row.doc] } })
+      acc.push({ key, data: { [dataType]: [row.doc as AnyDoc] } })
     } else {
       if (!acc[groupIndex].data[dataType]) {
         acc[groupIndex].data[dataType] = []
       }
-      acc[groupIndex].data[dataType].push(row.doc)
+      acc[groupIndex].data[dataType].push(row.doc as AnyDoc)
     }
     return acc
   }, [])
@@ -95,6 +90,7 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
     created: Date.now(),
     message: ''
   }))
+
   // @ts-expect-error does not exist
   const channel = useLiveQuery(({ max, created, type, parent }) => {
       if (parent) {
@@ -124,13 +120,7 @@ const InnerChannel: React.FC<{ id: string }> = ({ id }) => {
         1 + Math.max(messages.sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
       saveDoc(doc)
       setDoc(
-        {
-          type: 'message',
-          max: 0,
-          created: Date.now(),
-          profileImg: gravatarUrl,
-          message: ''
-        } as MessageDoc,
+        undefined,
         { replace: true }
       )
     }
