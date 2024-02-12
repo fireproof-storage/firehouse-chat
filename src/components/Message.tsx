@@ -54,9 +54,11 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions })
       <img src={profileImg} alt="gravatar" style={styles.gravatar} />
       <p style={styles.message}>{message}</p>
       <small style={styles.date}>{date.toLocaleString()}</small>
-      <br/>
+      <br />
       {reactions?.map(reaction => (
-        <span title={reaction.profileImg} key={reaction._id}>{reaction.reaction}</span>
+        <span title={reaction.profileImg} key={reaction._id}>
+          {reaction.reaction}
+        </span>
       ))}
       <EmojiPicker onEmojiSelect={onEmojiSelect} />
     </li>
@@ -98,7 +100,13 @@ const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onE
       {isOpen && (
         <div>
           {topReactions.map(emoji => (
-            <button key={emoji} onClick={() => onEmojiSelect(emoji)}>
+            <button
+              key={emoji}
+              onClick={() => {
+                setIsOpen(false)
+                onEmojiSelect(emoji)
+              }}
+            >
               {emoji}
             </button>
           ))}
