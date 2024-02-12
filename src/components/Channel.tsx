@@ -147,7 +147,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
 
   const channelName = thread ? thread.message : id
 
-console.log('aggregatedData', channel.rows[40]?.key)
+// console.log('aggregatedData', channel.rows[40]?.key)
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
