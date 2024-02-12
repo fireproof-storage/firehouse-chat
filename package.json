@@ -7,13 +7,15 @@
     "deploy": "partykit deploy"
   },
   "dependencies": {
-    "@fireproof/partykit": "^0.17.4",
+    "@fireproof/connect": "^0.17.4",
+    "@fireproof/core": "^0.17.5",
+    "@fireproof/partykit": "^0.17.5",
     "gravatar": "^1.8.2",
     "partysocket": "^0.0.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
-    "use-fireproof": "^0.17.7"
+    "use-fireproof": "^0.17.8"
   },
   "devDependencies": {
     "@types/gravatar": "^1.8.6",

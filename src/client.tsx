@@ -30,6 +30,7 @@ function App() {
     { path: '/channel', component: <NewChannel /> },
     { path: '/', component: <Home /> }
   ]
+
   return (
     <Router>
       <Routes>

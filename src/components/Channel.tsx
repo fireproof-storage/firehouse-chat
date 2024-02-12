@@ -8,6 +8,7 @@ import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
 import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
+import usePartySocket from 'partysocket/react'
 
 export const styles = {
   messages: {
@@ -19,7 +20,8 @@ export const styles = {
   channelOuter: {
     overflowY: 'auto' as const,
     scrollBehavior: 'smooth' as const,
-    height: '100vh'
+    height: '100vh',
+    padding: '1rem'
   }
 }
 
@@ -58,7 +60,14 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   const { database, useDocument, useLiveQuery } = useFireproof(id)
 
   // @ts-expect-error does not exist
-  connect.partykit(database)
+  connect.partykitS3(database)
+
+  const socket = usePartySocket({
+    room: id,
+    onMessage(evt) {
+      console.log('Received message:', evt.data)
+    }
+  })
 
   const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
 
@@ -79,7 +88,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   // @ts-expect-error does not exist
   const messages = useLiveQuery(({ created, type }) => (type === 'message' ? created : undefined), {
     descending: true,
-    // limit: 50
+    limit: 50
   })
 
   const reactions = useLiveQuery(
@@ -88,17 +97,14 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     { keys: messages.docs.map(({ _id }) => _id!) }
   )
 
-  // console.log('messages', messages)
-  // console.log('reactions', reactions)
-
   const groupedReactions = reactions.rows.reduce((acc: Record<string, ReactionDoc[]>, row) => {
-    const key = row.key as string;
+    const key = row.key as string
     if (!acc[key]) {
-      acc[key] = [];
+      acc[key] = []
     }
-    acc[key].push(row.doc as ReactionDoc);
-    return acc;
-  }, {} as Record<string, ReactionDoc[]>);
+    acc[key].push(row.doc as ReactionDoc)
+    return acc
+  }, {} as Record<string, ReactionDoc[]>)
 
   const handleAddMessage = (message: string) => {
     if (message.trim() !== '') {
@@ -106,9 +112,15 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
       doc.created = Date.now()
       doc.profileImg = gravatarUrl
       doc.max =
-        1 + Math.max((messages.docs as MessageDoc[]).sort((a, b) => b.created - a.created)[0]?.created || 0, doc.created)
+        1 +
+        Math.max(
+          (messages.docs as MessageDoc[]).sort((a, b) => b.created - a.created)[0]?.created || 0,
+          doc.created
+        )
       saveDoc(doc)
       setDoc(undefined, { replace: true })
+    } else {
+      socket.send('Please enter a message')
     }
   }
 
@@ -131,7 +143,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
       <h1>{channelName}</h1>
       <div>
         <ul style={styles.messages}>
-          {messages.docs.map((doc) => {
+          {messages.docs.map(doc => {
             const reactions = groupedReactions[doc._id!]
             return (
               <Message
