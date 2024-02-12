@@ -26,7 +26,7 @@ const buildAggregatedData = (rows: IndexRow[], groupingElementsCount: number): A
       if (!acc[groupIndex].data[dataType]) {
         acc[groupIndex].data[dataType] = []
       }
-      acc[groupIndex].data[dataType].push(row.doc as AnyDoc)
+      acc[groupIndex].data[dataType].unshift(row.doc as AnyDoc)
     }
     return acc
   }, [])
@@ -110,7 +110,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
     {
       descending: true,
       // range: [[0, 0, 'message'], [1707680483365, 1707680263265]],
-      limit: 50
+      // limit: 50
     }
   )
 
