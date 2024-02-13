@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom'
 
 import gravatar from 'gravatar'
 
-import { useFireproof, type IndexRow } from 'use-fireproof'
+import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
 import { MessageForm } from './MessageForm'
 import { EmailForm } from './EmailForm'
 import usePartySocket from 'partysocket/react'
+
+import type { MessageDoc, ReactionDoc } from '../types'
 
 export const styles = {
   messages: {
@@ -25,24 +27,6 @@ export const styles = {
   }
 }
 
-export interface MessageDoc {
-  type: 'message'
-  max: number
-  created: number
-  message: string
-  profileImg: string
-  _id?: string
-}
-
-export interface ReactionDoc {
-  type: 'reaction'
-  parent: { max: number; created: number; id: string }
-  reaction: string
-  profileImg: string
-  _id?: string
-}
-
-export type AnyDoc = MessageDoc | ReactionDoc
 
 const Thread: React.FC = () => {
   const { id, tid } = useParams<{ id: string; tid: string }>()

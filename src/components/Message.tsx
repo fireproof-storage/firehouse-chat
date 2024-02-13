@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Database } from 'use-fireproof'
-import type { MessageDoc, AnyDoc, ReactionDoc } from './Channel'
+import type { MessageDoc, ReactionDoc } from '../types'
 
 interface MessageProps {
   doc: MessageDoc

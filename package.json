@@ -11,6 +11,7 @@
     "@fireproof/core": "^0.17.5",
     "@fireproof/partykit": "^0.17.5",
     "gravatar": "^1.8.2",
+    "openai": "^4.28.0",
     "partysocket": "^0.0.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
