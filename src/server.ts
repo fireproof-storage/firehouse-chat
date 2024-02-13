@@ -42,7 +42,7 @@ export default class Server implements Party.Server {
         latest.rows.map(row => row.value.message || row.value.reaction)
       )
       const filtered = latest.rows.filter(
-        row => !row.value.ai && row.value.message && /ai/i.test(row.value.message as string)
+        row => !row.value.ai && row.value.message && /(^|\W)ai(\W|$)/i.test(row.value.message as string)
       )
       for (const row of filtered) {
         const doc = row.value
