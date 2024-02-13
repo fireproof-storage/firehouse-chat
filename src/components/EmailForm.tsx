@@ -22,7 +22,7 @@ export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = 
         autoComplete="off"
         style={{ width: '80%', marginRight: '1rem' }}
         onChange={e => setEmail(e.target.value)}
-        placeholder="Enter your email"
+        placeholder="Enter your email for Gravatar image"
       />
       <button type="submit">Login</button>
     </form>
