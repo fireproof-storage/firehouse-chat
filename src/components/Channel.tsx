@@ -118,7 +118,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
           doc.created
         )
       saveDoc(doc)
-      setDoc(undefined, { replace: true })
+      setDoc()
     } else {
       socket.send('Please enter a message')
     }
