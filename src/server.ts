@@ -30,9 +30,6 @@ function myFireproof(name: string, partyHost?: string) {
 export default class Server implements Party.Server {
   db: Database
   constructor(readonly room: Party.Room) {
-
-    console.log('PARTYKIT_HOST', PARTYKIT_HOST)
-
     this.db = myFireproof(room.id, PARTYKIT_HOST as string)
     this.db.subscribe(async () => {
       const latest = await this.db.changes([], {limit: 5})
