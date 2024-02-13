@@ -11,7 +11,6 @@ interface LinkItem {
 const Sidebar: React.FC = () => {
   const { database, useDocument, useLiveQuery } = useFireproof('_channels')
 
-  // console.log('process.env.PARTYKIT_HOST', PARTYKIT_HOST as 'string')
   // @ts-expect-error does not exist
   connect.partykitS3(database, PARTYKIT_HOST as string)
 

@@ -17,7 +17,7 @@ const NewChannel: React.FC = () => {
     if (name.trim() !== '' && description.trim() !== '') {
       doc._id = 'channel:' + name
       saveDoc(doc)
-      setDoc({ created: Date.now(), name: '', description: '' }, { replace: true })
+      setDoc()
     }
   }
 
