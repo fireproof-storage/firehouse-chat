@@ -27,12 +27,12 @@ function myFireproof(name: string, partyHost?: string) {
   return db
 }
 
-const OPENAI_KEY = ['s', 'k-lr', 'ciwz0sup', 'Wbyot', 'xetNjT3Blbk', 'FJJ4UvuZdwT473CEtNnzya'].join(
+const OPENAI_API_KEY = ['s', 'k-lr', 'ciwz0sup', 'Wbyot', 'xetNjT3Blbk', 'FJJ4UvuZdwT473CEtNnzya'].join(
   ''
 )
 export default class Server implements Party.Server {
   db: Database
-  ai = new AI(OPENAI_KEY)
+  ai = new AI(OPENAI_API_KEY)
   constructor(readonly room: Party.Room) {
     this.db = myFireproof(room.id, PARTYKIT_HOST as string)
     this.db.subscribe(async () => {
