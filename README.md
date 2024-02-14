@@ -2,6 +2,24 @@
 
 The example is based on the PartyKit generator. Fireproof runs anywhere.
 
+This app is a team chat application. It uses Gravatar for user avatars and Fireproof for real-time data synchronization. A real deployment would use a secure authentication method. 
+
+In the workshop, we'll learn how the main timeline query works, how to add a new message, and how to create channels. We'll enable threads and look at AI integration on the backend. If we have time we will add file uploads and image previews.
+
+## Running the app
+
+* Git clone the repository
+* Run `npm install`
+* Run `npm run dev`
+
+## Changing the code
+
+Look in the `src` directory for the server and client code. The server code is in `server.ts` and the client code is in `client.ts`.
+
+The client uses components from the `components` directory. The main chat component is in `components/Channel.tsx`. The sidebar is in `components/Sidebar.tsx`, and it lists all the channels.
+
+### Generated PartyKit Info
+
 Welcome to the party, pal!
 
 This is a [Partykit](https://partykit.io) project, which lets you create real-time collaborative applications with minimal coding effort.
