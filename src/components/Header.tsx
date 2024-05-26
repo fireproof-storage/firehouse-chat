@@ -16,9 +16,12 @@ const styles = {
   },
   loginBtn: {
     fontSize: '14px',
-    color: '#333',
+    backgroundColor: '#363638',
     width: '110px',
-    padding: '8px'
+    padding: '8px',
+    borderRadius: '5px',
+    boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.15)',
+    border: '1px solid #454546'
   }
 }
 

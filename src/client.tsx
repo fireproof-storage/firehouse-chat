@@ -17,14 +17,18 @@ const styles = {
   header: {
     padding: '12px 16px',
     borderBottom: '1px solid black',
+    backgroundColor: '#1C1D1E'
   },
   layoutWrap: {
     display: 'flex',
-    height: '100%',
+    flexGrow: '1',
+    overflow: 'hidden'
   },
   layoutSidebar: {
     width: '285px',
-    height: '100%',
+    overflowY: 'scroll',
+    backgroundColor: '#1C1D1E',
+    borderRight: '1px solid black',
   },
   layoutMain: {
     flexGrow: '1'
