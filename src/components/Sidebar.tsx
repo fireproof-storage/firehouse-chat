@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom'
 import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 
-interface LinkItem {
-  name: string
-  path: string
-}
-
 const Sidebar: React.FC = () => {
   const { database, useDocument, useLiveQuery } = useFireproof('_channels')
 
@@ -16,26 +11,13 @@ const Sidebar: React.FC = () => {
 
   const channels = useLiveQuery('name').docs as { name: string; _id: string; description: string }[]
 
-  const links: LinkItem[] = [
-    { name: 'Home', path: '/' },
-    { name: 'New Channel', path: '/channel' }
-    // Add more links as needed
-  ]
-
   return (
     <div
       style={{
         padding: '1rem'
       }}
     >
-      <h2>Firehouse</h2>
-      <ul>
-        {links.map((link, index) => (
-          <li key={index}>
-            <Link to={link.path}>{link.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <Link to='/channel'>+ new channel</Link>
 
       <h3>Channels</h3>
       <ul>

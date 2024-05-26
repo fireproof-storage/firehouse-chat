@@ -1,5 +1,4 @@
 import './styles.css'
-import './client.css'
 // import usePartySocket from 'partysocket/react'
 
 import React from 'react'
@@ -12,15 +11,39 @@ import { Home } from './components/Home'
 import { Channel, Thread } from './components/Channel'
 import { NewChannel } from './components/NewChannel'
 import { Sidebar } from './components/Sidebar'
+import { Header } from './components/Header'
+
+const styles = {
+  header: {
+    padding: '12px 16px',
+    borderBottom: '1px solid black',
+  },
+  layoutWrap: {
+    display: 'flex',
+    height: '100%',
+  },
+  layoutSidebar: {
+    width: '285px',
+    height: '100%',
+  },
+  layoutMain: {
+    flexGrow: '1'
+  }
+}
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="layout-wrap">
-      <div className="layout-sidebar">
+    <>
+    <header style={styles.header}>
+      <Header />
+    </header>
+    <div style={styles.layoutWrap}>
+      <div style={styles.layoutSidebar}>
         <Sidebar />
       </div>
-      <div className="layout-main">{children}</div>
+      <div style={styles.layoutMain}>{children}</div>
     </div>
+    </>
   )
 }
 
