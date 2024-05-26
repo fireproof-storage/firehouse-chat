@@ -1,4 +1,5 @@
 import './styles.css'
+import './client.css'
 // import usePartySocket from 'partysocket/react'
 
 import React from 'react'
@@ -14,11 +15,11 @@ import { Sidebar } from './components/Sidebar'
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ width: '20%' }}>
+    <div className="layout-wrap">
+      <div className="layout-sidebar">
         <Sidebar />
       </div>
-      <div style={{ width: '80%' }}>{children}</div>
+      <div className="layout-main">{children}</div>
     </div>
   )
 }
