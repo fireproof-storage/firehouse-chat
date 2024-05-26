@@ -2,6 +2,34 @@ import React from 'react'
 
 import { useFireproof } from 'use-fireproof'
 
+const styles = {
+  formItem: {
+    marginBottom: '24px'
+  },
+  label: {
+    display: 'block',
+    fontSize: '16px',
+    marginBottom: '12px'
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    borderRadius: '5px',
+    backgroundColor: '#1C1D1E',
+    border: '1px solid #000'
+  },
+  channelBtn: {
+    display: 'block',
+    fontSize: '14px',
+    textAlign: 'center',
+    backgroundColor: '#363638',
+    padding: '10px 36px',
+    borderRadius: '5px',
+    boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.15)',
+    border: '1px solid #454546'
+  }
+}
+
 const NewChannel: React.FC = () => {
   const { database, useDocument, useLiveQuery } = useFireproof('_channels')
 
@@ -22,32 +50,38 @@ const NewChannel: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: '1rem', backgroundColor: '#f4f4f4' }}>
-      <div>
-        <label htmlFor="channelName">Channel Name:</label>
-        <br />
+    <form onSubmit={handleSubmit} style={{ padding: '22px' }}>
+      <div style={styles.formItem}>
+        <label
+          htmlFor="channelName"
+          style={styles.label}
+          >Channel Name:<
+        /label>
         <input
           type="text"
           id="channelName"
           value={name}
           onChange={e => setDoc({ name: e.target.value })}
           placeholder="Enter channel name"
-          style={{ marginLeft: '1rem' }}
+          style={styles.input}
         />
       </div>
-      <div>
-        <label htmlFor="channelDescription">Description:</label>
-        <br />
+      <div style={styles.formItem}>
+        <label
+          htmlFor="channelDescription"
+          style={styles.label}
+          >Description:<
+        /label>
         <input
           type="text"
           id="channelDescription"
           value={description}
           onChange={e => setDoc({ description: e.target.value })}
           placeholder="Enter channel description"
-          style={{ marginLeft: '1rem' }}
+          style={styles.input}
         />
       </div>
-      <button type="submit" style={{ margin: '1rem' }}>
+      <button type="submit" style={styles.channelBtn}>
         Create Channel
       </button>
     </form>

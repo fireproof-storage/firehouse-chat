@@ -15,7 +15,7 @@ import { Header } from './components/Header'
 
 const styles = {
   header: {
-    padding: '12px 16px',
+    padding: '12px 22px 12px 16px',
     borderBottom: '1px solid black',
     backgroundColor: '#1C1D1E'
   },

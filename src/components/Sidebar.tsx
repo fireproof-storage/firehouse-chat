@@ -13,7 +13,7 @@ const styles = {
     padding: '10px',
     borderRadius: '5px',
     boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.15)',
-    border: '1px solid #454546'
+    border: '1px solid #535355'
   },
   channelsHeading: {
     fontSize: '10px',
