@@ -16,6 +16,11 @@
   border: 1px solid #000;
 }
 
+.input:focus {
+  outline: none;
+  background-color: #242525;
+}
+
 .channelBtn {
   display: block;
   font-size: 14px;
@@ -25,4 +30,10 @@
   border-radius: 5px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
   border: 1px solid #454546;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.channelBtn:active {
+  transform: scale(0.9);
 }
