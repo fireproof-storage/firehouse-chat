@@ -1,15 +1,6 @@
 import React, { useState } from 'react'
 
-export const styles = {
-  messageForm: {
-    padding: '1rem',
-    backgroundColor: '#f4f4f4',
-    boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
-    position: 'fixed' as const,
-    bottom: 0,
-    width: '80%'
-  }
-}
+import styles from './MessageForm.module.css'
 
 export const MessageForm: React.FC<{ gravatar: string, handleAddMessage: (message: string) => void }> = ({
   handleAddMessage,
@@ -24,22 +15,19 @@ export const MessageForm: React.FC<{ gravatar: string, handleAddMessage: (messag
   }
 
   return (
-    <form style={styles.messageForm} onSubmit={handleSubmit} autoComplete="off">
-      <img src={gravatar} alt="gravatar" style={{ width: '40px', height: '40px', borderRadius: '50%',
-      marginTop: '-15px',
-      top: '15px',
-      position: 'relative',
-       marginRight: '1rem' }} />
+    <form className={styles.messageForm} onSubmit={handleSubmit} autoComplete="off">
+      <div className={styles.messageFormIcon}></div>
       <input
         title="write a message message"
         name="message"
         type="text"
         value={message}
+        placeholder="Hello world..."
         autoComplete="off"
-        style={{ width: '60%', marginRight: '1rem' }}
+        className={styles.input}
         onChange={e => setMessage(e.target.value)}
       />
-      <button type="submit">Post</button>
+      <button className={styles.messageFormBtn} type="submit">Post</button>
     </form>
   )
 }

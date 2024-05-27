@@ -1,5 +1,5 @@
 import React from 'react'
-import { styles } from './MessageForm'
+// import { styles } from './MessageForm'
 
 export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = ({
   handleSetEmail
@@ -8,7 +8,6 @@ export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = 
 
   return (
     <form
-      style={styles.messageForm}
       onSubmit={e => {
         e.preventDefault()
         handleSetEmail(email)

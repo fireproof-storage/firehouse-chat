@@ -4,11 +4,15 @@
   display: grid;
   grid-template-columns: auto 1fr 80px;
   column-gap: 10px;
+  padding: 22px;
+}
+
+.messageWrap {
+  max-width: 800px;
 }
 
 .message {
   opacity: 0.8;
-  max-width: 800px;
   margin-bottom: 8px;
   margin-top: 4px;
 }
@@ -24,7 +28,7 @@
 }
 
 .time {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .gravatar {
@@ -51,6 +55,7 @@
   border-radius: 4px;
   background-color: #1C1D1E;
   margin-right: 4px;
+  margin-bottom: 4px;
 }
 
 .picker,
@@ -64,7 +69,8 @@
   background-color: #242525;
 }
 
-.reactionBtn:hover {
+.reactionBtn:hover,
+.picker:hover {
   background-color: #363638;
 }
 
@@ -74,9 +80,3 @@
   display: flex;
   background-color: #121314;
 }
-
-
-
-
-
-

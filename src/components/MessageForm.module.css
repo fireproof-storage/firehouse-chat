@@ -1,0 +1,52 @@
+.messageForm {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 22px;
+  background-color: #1C1D1E;
+  border-top: 1px solid #000;
+  display: flex;
+  gap: 22px;
+}
+
+.input {
+  flex-grow: 1;
+  background-color: #121314;
+  border-radius: 8px;
+  outline: none;
+  padding-left: 44px;
+  border: 1px solid #000;
+}
+
+.input:focus::placeholder {
+  opacity: 0;
+}
+
+.messageFormIcon {
+  position: absolute;
+  top: 50%;
+  left: 36px;
+  background-image: url('data:image/svg+xml,%3Csvg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M14.2895 3.14373C14.0151 3.40814 13.7489 3.66477 13.7408 3.9214C13.7166 4.17025 13.9909 4.42688 14.2491 4.66796C14.6364 5.0568 15.0156 5.40675 14.9995 5.78781C14.9834 6.16886 14.5719 6.56548 14.1604 6.95431L10.828 10.1739L9.6823 9.06957L13.1115 5.77225L12.3369 5.02569L11.1911 6.1222L8.16541 3.20594L11.2637 0.227468C11.5784 -0.0758228 12.1029 -0.0758228 12.4014 0.227468L14.2895 2.04722C14.6041 2.33495 14.6041 2.84044 14.2895 3.14373ZM0 11.0837L7.71357 3.64144L10.7393 6.5577L3.02572 14H0V11.0837Z" fill="%235C5C5C"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 15px;
+  height: 14px;
+  transform: translateY(-8px);
+}
+
+.messageFormBtn {
+  font-size: 14px;
+  background-color: rgb(54, 54, 56);
+  width: 110px;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 2px;
+  border: 1px solid rgb(69, 69, 70);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.messageFormBtn:active {
+  transform: scale(0.9);
+}

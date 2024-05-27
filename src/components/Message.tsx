@@ -29,7 +29,7 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions, t
   return (
     <li className="message" className={styles.listItem}>
       <img src={profileImg} alt="gravatar" className={styles.gravatar} />
-      <div>
+      <div className={styles.messageWrap}>
         <p className={styles.message}>{message}</p>
         <EmojiPicker onEmojiSelect={onEmojiSelect} />
         {reactions?.map(reaction => (

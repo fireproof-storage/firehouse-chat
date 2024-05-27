@@ -21,6 +21,10 @@
   background-color: #242525;
 }
 
+.input:focus::placeholder {
+  opacity: 0;
+}
+
 .channelBtn {
   display: block;
   font-size: 14px;

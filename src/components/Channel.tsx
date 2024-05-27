@@ -15,14 +15,14 @@ import type { MessageDoc, ReactionDoc } from '../types'
 export const styles = {
   messages: {
     display: 'flex',
-    flexDirection: 'column-reverse' as const,
-    gap: '45px'
+    flexDirection: 'column-reverse' as const
   },
   channelOuter: {
     overflowY: 'auto' as const,
     scrollBehavior: 'smooth' as const,
-    height: '100vh',
-    padding: '22px'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   }
 }
 
@@ -122,7 +122,7 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
-      <div>
+      <div style={{flexGrow: '1'}}>
         <ul style={styles.messages}>
           {messages.docs.map(doc => {
             const reactions = groupedReactions[doc._id!]
