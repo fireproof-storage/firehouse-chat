@@ -16,17 +16,15 @@ export const styles = {
   messages: {
     display: 'flex',
     flexDirection: 'column-reverse' as const,
-    marginBottom: '4em',
-    padding: '1rem'
+    gap: '45px'
   },
   channelOuter: {
     overflowY: 'auto' as const,
     scrollBehavior: 'smooth' as const,
     height: '100vh',
-    padding: '1rem'
+    padding: '22px'
   }
 }
-
 
 const Thread: React.FC = () => {
   const { id, tid } = useParams<{ id: string; tid: string }>()
@@ -124,7 +122,6 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
 
   return (
     <div ref={scrollableDivRef} style={styles.channelOuter}>
-      <h1>{channelName}</h1>
       <div>
         <ul style={styles.messages}>
           {messages.docs.map(doc => {

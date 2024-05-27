@@ -2,38 +2,14 @@ import React from 'react'
 import type { Database } from 'use-fireproof'
 import type { MessageDoc, ReactionDoc } from '../types'
 
+import styles from './Message.module.css'
+
 interface MessageProps {
   doc: MessageDoc
   gravatar: string
   reactions: ReactionDoc[]
   database: Database
   thread?: boolean
-}
-
-const styles = {
-  listItem: {
-    listStyleType: 'none',
-    margin: '0',
-    padding: '10px'
-  },
-  message: {
-    fontSize: '16px',
-    color: '#333'
-  },
-  date: {
-    fontSize: '12px',
-    color: '#999'
-  },
-  gravatar: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    marginTop: '-15px',
-    top: '25px',
-    position: 'relative' as const,
-    marginRight: '0.5rem',
-    float: 'left' as const
-  }
 }
 
 const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions, thread }) => {
@@ -51,27 +27,27 @@ const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions, t
   }
 
   return (
-    <li className="message" style={styles.listItem}>
-      <img src={profileImg} alt="gravatar" style={styles.gravatar} />
-      <p style={styles.message}>{message}</p>
-      <small style={styles.date}>{date.toLocaleString()}</small>
-      <br />
-      {reactions?.map(reaction => (
-        <span title={reaction.profileImg} key={reaction._id}>
-          {reaction.reaction}
-        </span>
-      ))}
-      <br />
-      {thread && (
-        <Link
-          style={{ float: 'left', padding: '0 10px', textDecoration: 'none' }}
-          to={`./thread/${mId}`}
-        >
-          🧵
-        </Link>
-      )}
-
-      <EmojiPicker onEmojiSelect={onEmojiSelect} />
+    <li className="message" className={styles.listItem}>
+      <img src={profileImg} alt="gravatar" className={styles.gravatar} />
+      <div>
+        <p className={styles.message}>{message}</p>
+        <EmojiPicker onEmojiSelect={onEmojiSelect} />
+        {reactions?.map(reaction => (
+          <span title={reaction.profileImg} key={reaction._id} className={styles.reaction}>
+            {reaction.reaction}
+          </span>
+        ))}
+        {thread && (
+          <Link
+            style={{ float: 'left', padding: '0 10px', textDecoration: 'none' }}
+            to={`./thread/${mId}`}
+          >
+            🧵
+          </Link>
+        )}
+        <p className={styles.time}>{date.toLocaleTimeString()}</p>
+      </div>
+      <p className={styles.date}>{date.toLocaleDateString()}</p>
     </li>
   )
 }
@@ -107,12 +83,13 @@ const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onE
   ]
 
   return (
-    <div>
-      <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? '➖' : '➕'}</button>
+    <div className={styles.pickerWrap}>
+      <button className={styles.picker} onClick={() => setIsOpen(!isOpen)}>{isOpen ? '➖' : '➕'}</button>
       {isOpen && (
-        <div>
+        <ul className={styles.reactionBtnWrap}>
           {topReactions.map(emoji => (
-            <button
+            <li
+              className={styles.reactionBtn}
               key={emoji}
               onClick={() => {
                 setIsOpen(false)
@@ -120,9 +97,9 @@ const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onE
               }}
             >
               {emoji}
-            </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )
