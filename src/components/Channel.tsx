@@ -51,11 +51,6 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   })
 
   const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
-
-  const handleSetEmail = (email: string) => {
-    localStorage.setItem('email', email)
-    setEmail(email)
-  }
   const gravatarUrl = email ? gravatar.url(email) : ''
 
   const [doc, setDoc, saveDoc] = useDocument<MessageDoc>(() => ({
@@ -120,29 +115,32 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
   const channelName = thread ? thread.message : id
 
   return (
-    <div ref={scrollableDivRef} style={styles.channelOuter}>
-      <div style={{flexGrow: '1'}}>
-        <ul style={styles.messages}>
-          {messages.docs.map(doc => {
-            const reactions = groupedReactions[doc._id!]
-            return (
-              <Message
-                key={doc._id}
-                doc={doc as MessageDoc}
-                gravatar={gravatarUrl}
-                database={database}
-                reactions={reactions as ReactionDoc[]}
-                thread={false && !thread}
-              />
-            )
-          })}
-        </ul>
-      </div>
-      {email && (
-        <MessageForm handleAddMessage={handleAddMessage} gravatar={gravatarUrl} />
+    <>
+      { email && (
+        <div ref={scrollableDivRef} style={styles.channelOuter}>
+          <div style={{flexGrow: '1'}}>
+            <ul style={styles.messages}>
+              {messages.docs.map(doc => {
+                const reactions = groupedReactions[doc._id!]
+                return (
+                  <Message
+                    key={doc._id}
+                    doc={doc as MessageDoc}
+                    gravatar={gravatarUrl}
+                    database={database}
+                    reactions={reactions as ReactionDoc[]}
+                    thread={false && !thread}
+                  />
+                )
+              })}
+            </ul>
+          </div>
+          <MessageForm handleAddMessage={handleAddMessage} gravatar={gravatarUrl} />
+        </div>
       )}
-    </div>
+    </>
   )
+
 }
 
 export { Channel, Thread }
