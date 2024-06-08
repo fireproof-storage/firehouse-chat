@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './Header.module.css'
 
+import { EmailForm } from './EmailForm'
+
 const Header: React.FC = () => {
+  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'))
+  const [inEmailOpen, setIsEmailOpen] = useState(false)
+
+  function handleSetEmail(email: string) {
+    localStorage.setItem('email', email)
+    setEmail(email)
+    setIsEmailOpen(false)
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('email', email)
+    setEmail('')
+  }
+
   return (
     <header className={styles.header}>
       <Link to='/'>
@@ -12,7 +28,14 @@ const Header: React.FC = () => {
           <span className={styles.accent}>house</span>
         </h1>
       </Link>
-      <button className={styles.loginBtn}>Login</button>
+      { email ? (
+        <button onClick={handleLogout} className={styles.loginBtn}>Logout</button>
+      ) : (
+        <>
+          <button onClick={() => setIsEmailOpen(true)} className={styles.loginBtn}>Login</button>
+          { inEmailOpen && <EmailForm handleSetEmail={handleSetEmail} /> }
+        </>
+      )}
     </header>
   )
 }

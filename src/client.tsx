@@ -14,11 +14,6 @@ import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 
 const styles = {
-  header: {
-    padding: '12px 22px 12px 16px',
-    borderBottom: '1px solid black',
-    backgroundColor: '#1C1D1E'
-  },
   layoutWrap: {
     display: 'flex',
     flexGrow: '1',
@@ -38,9 +33,7 @@ const styles = {
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-    <header style={styles.header}>
-      <Header />
-    </header>
+    <Header />
     <div style={styles.layoutWrap}>
       <div style={styles.layoutSidebar}>
         <Sidebar />

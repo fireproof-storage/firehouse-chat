@@ -1,5 +1,6 @@
 import React from 'react'
-// import { styles } from './MessageForm'
+
+import styles from './EmailForm.module.css'
 
 export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = ({
   handleSetEmail
@@ -7,23 +8,25 @@ export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = 
   const [email, setEmail] = React.useState('')
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault()
-        handleSetEmail(email)
-      }}
-    >
-      <input
-        title="Set your email"
-        name="email"
-        type="email"
-        value={email}
-        autoComplete="off"
-        style={{ width: '80%', marginRight: '1rem' }}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Enter your email for Gravatar image"
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className={styles.emailFormWrap}>
+      <form className={styles.form}
+        onSubmit={e => {
+          e.preventDefault()
+          handleSetEmail(email)
+        }}
+      >
+        <input
+          title="Set your email"
+          name="email"
+          type="email"
+          value={email}
+          autoComplete="off"
+          className={styles.input}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Enter your email for Gravatar image"
+        />
+        <button className={styles.button} type="submit">Login</button>
+      </form>
+    </div>
   )
 }

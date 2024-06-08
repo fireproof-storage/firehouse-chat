@@ -7,7 +7,6 @@ import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 import { Message } from './Message'
 import { MessageForm } from './MessageForm'
-import { EmailForm } from './EmailForm'
 import usePartySocket from 'partysocket/react'
 
 import type { MessageDoc, ReactionDoc } from '../types'
@@ -139,10 +138,8 @@ const InnerChannel: React.FC<{ id: string; thread?: MessageDoc }> = ({ id, threa
           })}
         </ul>
       </div>
-      {email ? (
+      {email && (
         <MessageForm handleAddMessage={handleAddMessage} gravatar={gravatarUrl} />
-      ) : (
-        <EmailForm handleSetEmail={handleSetEmail} />
       )}
     </div>
   )
