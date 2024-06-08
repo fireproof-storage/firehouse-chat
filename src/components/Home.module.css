@@ -1,0 +1,20 @@
+.homeWrap {
+  padding: 24px;
+}
+
+.h1 {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+
+.paragraph {
+  color: #717171;
+}
+
+.link {
+  color: white;
+}
+
+.link:hover {
+  color: #F98B4D;
+}
