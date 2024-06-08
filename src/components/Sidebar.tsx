@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 import { useFireproof } from 'use-fireproof'
 import { connect } from '@fireproof/partykit'
 
@@ -19,16 +19,19 @@ const Sidebar: React.FC = () => {
         padding: '16px'
       }}
     >
-      <Link to='/channel' className={styles.newChannelBtn}>+ new channel</Link>
+      <NavLink to='/channel' className={styles.newChannelBtn}>+ new channel</NavLink>
 
       <h2 className={styles.channelsHeading}>channels</h2>
       <ul>
         {channels.map(channel => (
           <li key={channel._id}>
-            <Link to={`/channel/${channel.name}`} className={styles.channel}>
+            <NavLink
+              to={`/channel/${channel.name}`}
+              className={({ isActive }) => isActive ? `${styles.channel} ${styles.active}` : styles.channel}
+            >
               <h3 className={styles.channelTitle}>{channel.name}</h3>
               <p className={styles.channelDescr}>{channel.description}</p>
-            </Link>
+            </NavLink>
           </li>
         ))}
       </ul>

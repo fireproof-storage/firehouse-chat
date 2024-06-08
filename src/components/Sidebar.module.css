@@ -32,6 +32,10 @@
   padding: 12px;
 }
 
+.active {
+  background-color: #4F505B;
+}
+
 .channelTitle {
   display: block;
   font-size: 16px;
