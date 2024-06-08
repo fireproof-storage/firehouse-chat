@@ -12,6 +12,29 @@ interface MessageProps {
   thread?: boolean
 }
 
+const topReactions = [
+  '👍',
+  '😂',
+  '😍',
+  '😭',
+  '🔥',
+  '🙌',
+  '👏',
+  '🤔',
+  '😢',
+  '🎉',
+  '💕',
+  '🤣',
+  '🥺',
+  '✨',
+  '😒',
+  '👀',
+  '🙄',
+  '🤦‍♂️',
+  '🤷‍♀️',
+  '👌'
+]
+
 const Message: React.FC<MessageProps> = ({ doc, gravatar, database, reactions, thread }) => {
   const { message, max, created, profileImg, _id: mId } = doc
   const date = new Date(created)
@@ -59,32 +82,25 @@ import { Link } from 'react-router-dom'
 
 const EmojiPicker: React.FC<{ onEmojiSelect: (emoji: string) => void }> = ({ onEmojiSelect }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const topReactions = [
-    '👍',
-    '😂',
-    '😍',
-    '😭',
-    '🔥',
-    '🙌',
-    '👏',
-    '🤔',
-    '😢',
-    '🎉',
-    '💕',
-    '🤣',
-    '🥺',
-    '✨',
-    '😒',
-    '👀',
-    '🙄',
-    '🤦‍♂️',
-    '🤷‍♀️',
-    '👌'
-  ]
+
+  function handleClick(e) {
+    if (!isOpen) {
+      e.stopPropagation()
+      setIsOpen(true)
+
+      const targ = e.target
+      window.addEventListener('click', (e) => {
+        if (e.target === targ) return
+        setIsOpen(false)
+      }, { once: true })
+    } else {
+      setIsOpen(false)
+    }
+  }
 
   return (
     <div className={styles.pickerWrap}>
-      <button className={styles.picker} onClick={() => setIsOpen(!isOpen)}>{isOpen ? '➖' : '➕'}</button>
+      <button className={styles.picker} onClick={handleClick}>{isOpen ? '➖' : '➕'}</button>
       {isOpen && (
         <ul className={styles.reactionBtnWrap}>
           {topReactions.map(emoji => (
