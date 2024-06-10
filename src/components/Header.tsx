@@ -32,7 +32,7 @@ const Header: React.FC<{ email: string }> = ({ email, onSetEmail }) => {
       ) : (
         <>
           <button onClick={() => setIsEmailOpen(true)} className={styles.loginBtn}>Login</button>
-          { inEmailOpen && <EmailForm handleSetEmail={handleSetEmail} /> }
+          { inEmailOpen && <EmailForm handleSetEmail={handleSetEmail} onSetIsEmailOpen={setIsEmailOpen}/> }
         </>
       )}
     </header>

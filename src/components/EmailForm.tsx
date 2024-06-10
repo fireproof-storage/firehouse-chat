@@ -2,13 +2,18 @@ import React from 'react'
 
 import styles from './EmailForm.module.css'
 
-export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = ({
-  handleSetEmail
-}) => {
+export const EmailForm: React.FC<{
+  handleSetEmail: (email: string) => void;
+  onSetIsEmailOpen: (isOpen: boolean) => void;
+}> = ({ handleSetEmail, onSetIsEmailOpen }) => {
   const [email, setEmail] = React.useState('')
 
+  function handleClick(e) {
+   if (!e.target.closest('form')) onSetIsEmailOpen(false)
+  }
+
   return (
-    <div className={styles.emailFormWrap}>
+    <div className={styles.emailFormWrap} onClick={handleClick}>
       <form className={styles.form}
         onSubmit={e => {
           e.preventDefault()
@@ -25,7 +30,7 @@ export const EmailForm: React.FC<{ handleSetEmail: (email: string) => void }> = 
           onChange={e => setEmail(e.target.value)}
           placeholder="Enter your email for Gravatar image"
         />
-        <button className={styles.button} type="submit">Login</button>
+        <button className={styles.button} type="submit" disabled={!email}>Login</button>
       </form>
     </div>
   )
