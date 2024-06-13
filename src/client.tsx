@@ -13,34 +13,23 @@ import { NewChannel } from './components/NewChannel'
 import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 
-const styles = {
-  layoutWrap: {
-    display: 'flex',
-    flexGrow: '1',
-    overflow: 'hidden'
-  },
-  layoutSidebar: {
-    width: '285px',
-    overflowY: 'scroll',
-    backgroundColor: '#1C1D1E',
-    borderRight: '1px solid black',
-  },
-  layoutMain: {
-    flexGrow: '1'
-  }
-}
+import styles from './client.module.css'
 
 function Layout({ children, email, onSetEmail }: { children: React.ReactNode, email: string }) {
+const [isMobChannelsOpen, setIsMobChannelsOpen] = useState(false)
 
 return (
   <>
     <Header email={email} onSetEmail={onSetEmail}/>
     {email ? (
-      <div style={styles.layoutWrap}>
-        <div style={styles.layoutSidebar}>
-          <Sidebar />
+      <div className={styles.layoutWrap}>
+        <div className={styles.layoutSidebar} className={`${styles.layoutSidebar} ${isMobChannelsOpen ? styles.open : ''}`}>
+          <Sidebar
+            isMobChannelsOpen={isMobChannelsOpen}
+            onSetIsMobChannelsOpen={setIsMobChannelsOpen}
+          />
         </div>
-        <div style={styles.layoutMain}>{children}</div>
+        <div className={styles.layoutMain}>{children}</div>
       </div>
     ) : (
       <Home />

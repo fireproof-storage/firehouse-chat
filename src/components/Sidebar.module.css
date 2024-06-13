@@ -1,3 +1,7 @@
+.sidebarWrap {
+ padding: 16px;
+}
+
 .newChannelBtn {
   display: block;
   font-size: 14px;
@@ -46,4 +50,61 @@
   font-size: 12px;
   font-weight: 400;
   opacity: 0.7;
+}
+
+.openChannelsBtn {
+  width: 40px;
+  height: 40px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #363638;
+  cursor: pointer;
+}
+
+.newChannelIcon {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .openChannelsBtn {
+    display: flex;
+  }
+
+  .newChannelIcon { 
+    display: block;
+    line-height: 0;
+  }
+
+  .open.openChannelsBtn,
+  .open.newChannelIcon {
+    display: none;
+  }
+
+  .newChannelBtn:not(.open) {
+    width: 40px;
+    height: 40px;
+    border: unset;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .channelList,
+  .channelsHeading,
+  .newChannelBtnText {
+    display: none;
+  }
+
+  .open.channelList,
+  .open.channelsHeading,
+  .open.newChannelBtnText {
+    display: block;
+  }
+
+  .open.newChannelIcon {
+    line-height: 1.2;
+  }
 }

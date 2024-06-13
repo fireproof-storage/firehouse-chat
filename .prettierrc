@@ -1,0 +1,4 @@
+{
+  "format_on_save": false,
+  "disabled_directories_on_save": ["*/src/*"]
+}
