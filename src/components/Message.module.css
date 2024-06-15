@@ -97,3 +97,28 @@
   transform: translateY(-100%);
   z-index: 999;
 }
+
+@media (max-width: 700px) {
+  .listItem {
+    padding: 16px;
+    grid-template-columns: auto 1fr 65px;
+  }
+
+  .gravatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .date,
+  .time {
+    font-size: 10px;
+  }
+
+  .reaction,
+  .picker,
+  .reactionBtn {
+    width: 28px;
+    height: 23px;
+    line-height: 0;
+  }
+}

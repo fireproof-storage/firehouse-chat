@@ -50,3 +50,24 @@
 .messageFormBtn:active {
   transform: scale(0.9);
 }
+
+@media (max-width: 700px) {
+  .messageForm {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .input {
+    padding-left: 38px;
+    width: 80px;
+    text-overflow: ellipsis;
+  }
+
+  .messageFormIcon {
+    left: 28px;
+  }
+
+  .messageFormBtn {
+    width: 90px;
+  }
+}

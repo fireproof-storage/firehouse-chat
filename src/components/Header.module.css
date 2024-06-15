@@ -35,9 +35,14 @@
 @media (max-width: 700px) {
   .header {
     padding-left: 82px;
+    padding-right: 16px;
   }
 
   .header.logout {
     padding-left: 22px;
+  }
+
+  .loginBtn {
+    width: 90px;
   }
 }
