@@ -158,6 +158,10 @@ dist
 
 .vscode-test
 
+# Rrettier extention
+
+.prettierrc
+
 # yarn v2
 
 .yarn/cache
