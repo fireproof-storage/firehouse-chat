@@ -31,3 +31,9 @@
 .loginBtn:active {
   transform: scale(0.9);
 }
+
+@media (max-width: 700px) {
+  .header:not(.logout) {
+    padding-left: 82px;
+  }
+}

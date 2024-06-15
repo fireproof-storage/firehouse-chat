@@ -20,7 +20,7 @@ const Header: React.FC<{ email: string }> = ({ email, onSetEmail }) => {
   }
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${!email ? styles.logout : ''}`}>
       <Link to='/'>
         <h1 className={styles.h1}>
           Fire

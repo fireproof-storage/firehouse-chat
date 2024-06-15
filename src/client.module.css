@@ -6,7 +6,7 @@
 
 .layoutSidebar {
   width: 285px;
-  min-width: 200px;
+  min-width: 220px;
   overflow-y: scroll;
   background-color: #1C1D1E;
   border-right: 1px solid black;
@@ -20,15 +20,24 @@
 
 @media (max-width: 700px) {
   .layoutSidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 70px;
     flex-shrink: 0;
     min-width: unset;
+    z-index: 1000;
   }
 
   .layoutSidebar.open {
     width: 100%;
     transition: width 0.8s ease;
     will-change: width;
+  }
+
+  .layoutMain {
+    margin-left: 70px;
   }
 }
 

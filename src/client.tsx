@@ -20,7 +20,7 @@ const [isMobChannelsOpen, setIsMobChannelsOpen] = useState(false)
 
 return (
   <>
-    <Header email={email} onSetEmail={onSetEmail}/>
+    <Header email={email} onSetEmail={onSetEmail} />
     {email ? (
       <div className={styles.layoutWrap}>
         <div className={styles.layoutSidebar} className={`${styles.layoutSidebar} ${isMobChannelsOpen ? styles.open : ''}`}>
