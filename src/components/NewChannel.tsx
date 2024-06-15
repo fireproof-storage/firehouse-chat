@@ -1,11 +1,13 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import { useFireproof } from 'use-fireproof'
 
 import styles from './NewChannel.module.css'
 
-const NewChannel: React.FC = () => {
+const NewChannel: React.FC<{ onSetIsNewChannelOpen: () => void }> = ({ onSetIsNewChannelOpen }) => {
   const { database, useDocument, useLiveQuery } = useFireproof('_channels')
+  const navigate = useNavigate()
 
   const [doc, setDoc, saveDoc] = useDocument(() => ({
     created: Date.now(),
@@ -16,10 +18,15 @@ const NewChannel: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
     if (name.trim() !== '' && description.trim() !== '') {
       doc._id = 'channel:' + name
       saveDoc(doc)
       setDoc()
+    }
+    if (name && description) {
+      navigate(`/channel/${name}`)
+      onSetIsNewChannelOpen(false)
     }
   }
 

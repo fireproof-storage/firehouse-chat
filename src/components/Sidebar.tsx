@@ -5,9 +5,13 @@ import { connect } from '@fireproof/partykit'
 
 import styles from './Sidebar.module.css'
 
-const Sidebar: React.FC<{ isMobChannelsOpen: boolean, onSetIsMobChannelsOpen: () => void }> = ({ isMobChannelsOpen, onSetIsMobChannelsOpen }) => {
+const Sidebar: React.FC<{ 
+  isMobChannelsOpen: boolean,
+  onSetIsMobChannelsOpen: () => void,
+  isNewChannelOpen: boolean,
+  onSetIsNewChannelOpen : () => void
+}> = ({ isMobChannelsOpen, onSetIsMobChannelsOpen, isNewChannelOpen, onSetIsNewChannelOpen }) => {
   const { database, useDocument, useLiveQuery } = useFireproof('_channels')
-  const [isNewChannelOpen, setIsNewChannelOpen] = useState(false)
 
   // @ts-expect-error does not exist
   connect.partykitS3(database, PARTYKIT_HOST as string)
@@ -18,9 +22,9 @@ const Sidebar: React.FC<{ isMobChannelsOpen: boolean, onSetIsMobChannelsOpen: ()
     if (isNewChannelOpen) {
       e.preventDefault()
       history.go(-1)
-      setIsNewChannelOpen(false)
+      onSetIsNewChannelOpen(false)
     } else {
-      setIsNewChannelOpen(true)
+      onSetIsNewChannelOpen(true)
     }
     onSetIsMobChannelsOpen(false)
   }
@@ -40,7 +44,7 @@ const Sidebar: React.FC<{ isMobChannelsOpen: boolean, onSetIsMobChannelsOpen: ()
       <h2 className={`${styles.channelsHeading} ${isMobChannelsOpen ? styles.open : ''}`}>channels</h2>
       <SidebarMobNav isMobChannelsOpen={isMobChannelsOpen} onSetIsMobChannelsOpen={onSetIsMobChannelsOpen} />
       <ul className={`${styles.channelList} ${isMobChannelsOpen ? styles.open : ''}`}>
-        {channels.map(channel => (
+        {channels.sort((a, b) => b.created - a.created).map(channel => (
           <li key={channel._id}>
             <NavLink
               to={`/channel/${channel.name}`}
