@@ -33,7 +33,11 @@
 }
 
 @media (max-width: 700px) {
-  .header:not(.logout) {
+  .header {
     padding-left: 82px;
+  }
+
+  .header.logout {
+    padding-left: 22px;
   }
 }

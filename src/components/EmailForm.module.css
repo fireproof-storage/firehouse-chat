@@ -58,3 +58,19 @@
 .button:active {
   transform: scale(0.9);
 }
+
+@media (max-width: 700px) {
+  .form {
+    width: 80%;
+  }
+
+  .input {
+    width: 100%;
+    margin-bottom: 16px;
+    text-overflow: ellipsis;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
